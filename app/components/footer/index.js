@@ -3,7 +3,7 @@ import logoImage from '../../assets/img/logo.png';
 const Footer = () => {
     return ( 
     <>
-        <footer className="">
+  <footer className="fixed-bottom">
   <nav className="navbar navbar-expand-lg navbar-light nav-bottom">
     <div className="container">
       <div className="row w-100">

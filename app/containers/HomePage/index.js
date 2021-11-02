@@ -9,15 +9,15 @@ import React from 'react';
 import ErrorBoundary from '../../components/ErrorBoundary/errorBoundary';
 import NavBar  from '../../components/navbar';
 import Carousal from '../../components/carousal';
-import VideoSection from '../../components/videos'
-export default function HomePage() {
+ const HomePage = () => {
+  
   return (
     <h1>
       <ErrorBoundary>
         <NavBar />
         <Carousal />
-        <VideoSection />
       </ErrorBoundary>
     </h1>
   );
 }
+export default HomePage;

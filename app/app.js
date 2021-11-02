@@ -16,7 +16,10 @@ import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../app/assets/css/main.css';
+import TimeAgo from 'javascript-time-ago'
 
+import en from 'javascript-time-ago/locale/en.json'
+import ru from 'javascript-time-ago/locale/ru.json'
 
 // Import root app
 import App from 'containers/App';
@@ -40,7 +43,8 @@ import Footer from './components/footer';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
-
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
