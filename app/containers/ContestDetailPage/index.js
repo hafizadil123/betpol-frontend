@@ -59,7 +59,7 @@ const ContestDetailPage = ({ history }) => {
   const { popularBets: popularBetsFromApi } = responsePopularBetsData || {};
   const { responseData: allContestDetails} = allContests || {};
   const { contestDetails: all } = allContestDetails || {};
-  const { name, options = [], rules } = contestDetails || {};
+  const { name, options = [], rules, contestNewsLink } = contestDetails || {};
   const getClass = explantion => {
     if (explantion === 'SI') {
       return {
@@ -76,16 +76,22 @@ const ContestDetailPage = ({ history }) => {
   console.log('oddHistory', oddHistory)
   console.log('================================')
  
- 
+  const pickLastTen = (arr) => {
+    return arr.slice(Math.max(arr.length - 5, 0))
+  }
+
   const chartDataMapping = (data) => {
     const filterRequiredDataYes = data && data.length > 0 && data.map(item => item.odd_SI);
     const filterRequiredDataNo = data && data.length > 0 && data.map(item => item.odd_No);
+    const labelArray = data && data.length > 0 && data.map(item => item.createdAt.split('T')[0]);
+   
+
     const dataChart = {
-      labels: ['1', '2', '3', '4', '5', '6'],
+      labels: pickLastTen(labelArray),
       datasets: [
         {
           label: 'Option SI',
-          data: filterRequiredDataYes,
+          data: pickLastTen(filterRequiredDataYes),
           fill: false,
           backgroundColor: '#3867E7',
           borderColor: '#3867E7',
@@ -93,7 +99,7 @@ const ContestDetailPage = ({ history }) => {
         },
         {
           label: 'Option No',
-          data: filterRequiredDataNo,
+          data: pickLastTen(filterRequiredDataNo),
           fill: false,
           backgroundColor: '#EC3D3C',
           borderColor: '#EC3D3C',
@@ -499,25 +505,16 @@ const ContestDetailPage = ({ history }) => {
                       />
                     </div>
                     <div className="carousel-inner">
-                      {bets &&
-                        bets.length > 0 &&
-                        bets.slice(0, 2).map(item => (
+                      {contestNewsLink && contestNewsLink.length > 0 && contestNewsLink.map((i, index) =>(
                           <div
                             className="carousel-item active"
                             data-bs-interval={10000}
                           >
-                            <img
-                              src={item.contestId.urlPicture || mainImage}
-                              className="d-block w-100"
-                              alt="..."
-                            />
+                            <iframe width={560} height={315} src={`${i.news_link}`} title={i.news_name} frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
                             <div className="carousel-caption d-none d-md-block">
                               <h5 style={{ color: 'white' }}>
-                                {item.contestId.name}
+                                {i.news_name}
                               </h5>
-                              <p style={{ color: 'white' }}>
-                                {item.contestId.explanation}
-                              </p>
                             </div>
                           </div>
                         ))}
@@ -584,6 +581,7 @@ const ContestDetailPage = ({ history }) => {
                           aria-label="Slide 3"
                         />
                       </div>
+                  
                       <div className="carousel-inner">
                         {all && all.length > 0 && all[0].contestNewsName &&
                           all[0].contestNewsName.length > 0 &&

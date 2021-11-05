@@ -52,6 +52,7 @@ export default function AdminHistory() {
   const [newsAnalysisLink, setNewsAnalysisLink] = useState('');
   const [newsAnalysisOptionsEl, setNewsAnalysisOptionsEl] = useState([{}]);
   const [newsAnalysisErrorMessage, setAddBtnErrorMessageNewsAnalysis] = useState('');
+  const [editMessage, setEditMessageError] = useState({});
 
   const userId = JSON.parse(localStorage.getItem('user')) && JSON.parse(localStorage.getItem('user'))._id;
   const apiUrl = `/admin/history/get/${userId}`;
@@ -196,7 +197,7 @@ export default function AdminHistory() {
     }
   };
   const handleEdit = async(item) => {
-    console.log('ssssss', editOdds);
+    setLoading(true);
 
     let oddsArray = [];
     console.log(editOdds);
@@ -209,7 +210,18 @@ export default function AdminHistory() {
 
     }
    const {responseData, hasError, errorMessage} = await addOddHistory(reqObj)
-    console.log('edit odds', editOdds);
+    if(!hasError) {
+      setLoading(false);
+      setEditMessageError({
+        message: errorMessage,
+        color: 'red'
+      }) 
+    }
+    setEditMessageError({
+      message: 'data updated successfully!',
+      color: 'green'
+    });
+    setLoading(false);
   }
   return (
     <>
@@ -519,8 +531,10 @@ export default function AdminHistory() {
                               <h3 id="exampleModalLabel">Modificar apuesta</h3>
                             </div>
                           </div>
+                          {editMessage && <h4 style={{color: editMessage.color}}>{editMessage.message || ''}</h4>}
                         {editResult && <div className="modal-body">
                          <h5 className="text-start top-heading-admin"> {editResult.explanation || ''}</h5>
+              
                             <div className="card pt-4">
                               <div className="container">
                                 {editResult && editResult.options && editResult.options.map((item, index) => 
@@ -617,7 +631,11 @@ export default function AdminHistory() {
                             <div className="row">
                               <div className="col-7">
                                 <div className="d-grid gap-2 col-12 mx-auto my-3">
-                                  <button className="btn btn-primary login-btn" type="button" onClick={() => handleEdit(item)}>Modificar</button>
+                                {loading ? <button class="btn btn-primary login-btn" type="button" disabled>
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Loading...
+                            </button> :   <button className="btn btn-primary login-btn" type="button" onClick={() => handleEdit(item)}>Modificar</button>}
+                                
                                 </div>
                               </div>
                               <div className="col-5">

@@ -1,12 +1,11 @@
 import React from 'react';
 
-import ImageOne from '../../assets/img/main.png';
-import { useApi } from '../../components/customHooks/useApi';
 const VideoSection = ({ contestDetails }) => {
-  const [data] = useApi('/admin/video/get', false, { method: 'GET' });
-  const { responseData } = data || {};
-   const { videos } = responseData || {};
 
+   const filterVideos = contestDetails && contestDetails.length > 0 && contestDetails.map(item => item.contestDetails);
+
+  const videos = [].concat(...filterVideos || []);
+  console.log('active', videos)
   return (
     <>
       <section>
@@ -23,7 +22,7 @@ const VideoSection = ({ contestDetails }) => {
                         <button type="button" data-bs-target="#carouselExampleDark1" data-bs-slide-to={2} aria-label="Slide 3" />
                       </div>
                       <div className="carousel-inner">
-                        {videos && videos.length > 0 && videos.slice(0, 3).map((item, index) =>
+                        {videos && videos && videos.length > 0 && videos.map((item, index) =>
                           <div className={`card left carousel-item ${index === 0 && 'active'}`} data-bs-interval={2000}>
                             <div className="card-body">
                               <div className="container">
@@ -31,12 +30,14 @@ const VideoSection = ({ contestDetails }) => {
                                   <div className="card-heading">CÓMO FUNCIONA LA PÁGINA?</div>
                                 </div>
                               </div>
-                  
-                              <div className="container p-1">
-                                <div className="row">
-                                  <iframe width={560} height={315} src={`${item.link}`} title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-                                </div>
-                              </div>
+                          {item && item.contestNewsLink && item.contestNewsLink.length > 0 && item.contestNewsLink.map(el => 
+                             <div className="container p-1">
+                             <div className="row">
+                               <iframe width={560} height={315} src={`${el.news_link}`} title={el.news_name} frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                             </div>
+                           </div>
+                            )}
+                             
                             </div>
                           </div>
                           
