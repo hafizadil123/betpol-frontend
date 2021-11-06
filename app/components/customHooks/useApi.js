@@ -17,7 +17,7 @@ export const useApi = (
 	const [errorCode, setErrorCode] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	// const [, dispatch] = useStore();
-    const BASE_URL = process.env.BASE_URL || 'http://18.205.194.16/api';
+    const BASE_URL = process.env.BASE_URL || 'https://api.polbet.pe/api';
 	let fetchOptions = {};
 
 	// Private function to make options for post request
