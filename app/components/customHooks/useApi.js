@@ -17,7 +17,7 @@ export const useApi = (
 	const [errorCode, setErrorCode] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	// const [, dispatch] = useStore();
-    const BASE_URL = process.env.BASE_URL || '';
+    const BASE_URL = process.env.BASE_URL || 'http://18.205.194.16/api';
 	let fetchOptions = {};
 
 	// Private function to make options for post request
